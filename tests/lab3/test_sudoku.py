@@ -1,57 +1,23 @@
 import unittest
-
 from src.lab3.sudoku import *
 
 
-class SudokuTestCase(unittest.TestCase):
-    def test_group(self):
-        values = [1, 2, 3, 4]
-        expected_groups = [[1, 2], [3, 4]]
-        actual_groups = group(values, 2)
-        self.assertEqual(expected_groups, actual_groups)
+class TestSudoku(unittest.TestCase):
 
-        values = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-        expected_groups = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-        actual_groups = group(values, 3)
-        self.assertEqual(expected_groups, actual_groups)
+    def test_group(self):
+        self.assertEqual(group([1, 2, 3, 4, 5, 6, 7, 8, 9], 3), [[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+        self.assertEqual(group([1, 2, 3, 4, 5, 6], 3), [[1, 2, 3], [4, 5, 6]])
+        self.assertEqual(group([1, 2, 3, 4, 5, 6], 2), [[1, 2], [3, 4], [5, 6]])
 
     def test_get_row(self):
-        puzzle = [["1", "2", "."], ["4", "5", "6"], ["7", "8", "9"]]
-        pos = (0, 0)
-        expected_row = ["1", "2", "."]
-        actual_row = get_row(puzzle, pos)
-        self.assertEqual(expected_row, actual_row)
-
-        puzzle = [["1", "2", "3"], ["4", ".", "6"], ["7", "8", "9"]]
-        pos = (1, 0)
-        expected_row = ["4", ".", "6"]
-        actual_row = get_row(puzzle, pos)
-        self.assertEqual(expected_row, actual_row)
-
-        puzzle = [["1", "2", "3"], ["4", "5", "6"], [".", "8", "9"]]
-        pos = (2, 0)
-        expected_row = [".", "8", "9"]
-        actual_row = get_row(puzzle, pos)
-        self.assertEqual(expected_row, actual_row)
+        self.assertEqual(get_row([['1', '2', '.'], ['4', '5', '6'], ['7', '8', '9']], (0, 0)), ['1', '2', '.'])
+        self.assertEqual(get_row([['1', '2', '3'], ['4', '.', '6'], ['7', '8', '9']], (1, 0)), ['4', '.', '6'])
+        self.assertEqual(get_row([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']], (2, 0)), ['.', '8', '9'])
 
     def test_get_col(self):
-        puzzle = [["1", "2", "."], ["4", "5", "6"], ["7", "8", "9"]]
-        pos = (0, 0)
-        expected_col = ["1", "4", "7"]
-        actual_col = get_col(puzzle, pos)
-        self.assertEqual(expected_col, actual_col)
-
-        puzzle = [["1", "2", "3"], ["4", ".", "6"], ["7", "8", "9"]]
-        pos = (0, 1)
-        expected_col = ["2", ".", "8"]
-        actual_col = get_col(puzzle, pos)
-        self.assertEqual(expected_col, actual_col)
-
-        puzzle = [["1", "2", "3"], ["4", "5", "6"], [".", "8", "9"]]
-        pos = (0, 2)
-        expected_col = ["3", "6", "9"]
-        actual_col = get_col(puzzle, pos)
-        self.assertEqual(expected_col, actual_col)
+        self.assertEqual(get_col([['1', '2', '.'], ['4', '5', '6'], ['7', '8', '9']], (0, 0)), ['1', '4', '7'])
+        self.assertEqual(get_col([['1', '2', '3'], ['4', '.', '6'], ['7', '8', '9']], (0, 1)), ['2', '.', '8'])
+        self.assertEqual(get_col([['1', '2', '3'], ['4', '5', '6'], ['.', '8', '9']], (0, 2)), ['3', '6', '9'])
 
     def test_get_block(self):
         grid = [
@@ -145,6 +111,30 @@ class SudokuTestCase(unittest.TestCase):
         actual_solution = solve(grid)
         self.assertEqual(expected_solution, actual_solution)
 
+        grid = [
+            ["6", "6", "1", "1", "1", "5", "8", "3", "7"],
+            ["3", "5", "7", "8", "2", "6", "1", "4", "9"],
+            ["1", "4", "8", "9", "3", ".", ".", "2", "6"],
+            ["6", "3", "9", "5", "1", "2", "4", "7", "8"],
+            ["5", ".", "1", "7", "6", ".", "3", ".", "2"],
+            ["4", "7", "2", "3", ".", "8", "6", "1", "5"],
+            ["9", "6", "4", "2", "8", "3", "7", "5", "1"],
+            ["8", "1", ".", "4", "7", "9", "2", "6", "3"],
+            ["7", "2", ".", "6", "5", "1", "9", "8", "."],
+        ]
+        expected_solution = [
+            ["6", "6", "1", "1", "1", "5", "8", "3", "7"],
+            ["3", "5", "7", "8", "2", "6", "1", "4", "9"],
+            ["1", "4", "8", "9", "3", "7", "5", "2", "6"],
+            ["6", "3", "9", "5", "1", "2", "4", "7", "8"],
+            ["5", "8", "1", "7", "6", "4", "3", "9", "2"],
+            ["4", "7", "2", "3", "9", "8", "6", "1", "5"],
+            ["9", "6", "4", "2", "8", "3", "7", "5", "1"],
+            ["8", "1", "5", "4", "7", "9", "2", "6", "3"],
+            ["7", "2", "3", "6", "5", "1", "9", "8", "4"],
+        ]
+        actual_solution = solve(grid)
+        self.assertEqual(expected_solution, actual_solution)
 
     def test_check_solution(self):
         good_solution = [
