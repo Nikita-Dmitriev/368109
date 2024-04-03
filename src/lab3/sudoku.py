@@ -3,7 +3,6 @@ import random
 from random import randint
 import typing as tp
 
-from pyparsing import col
 
 T = tp.TypeVar("T")
 
